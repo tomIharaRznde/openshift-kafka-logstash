@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  logstash.conf: "input {\r\n  kafka {\r\n    bootstrap_servers => \"${KAFKA_BOOTSTRAP_SERVERS}\"\r\n
+    \   topics => \"${KAFKA_TOPIC_NAME}\"\r\n    codec => \"${KAFKA_INPUT_CODEC}\"\r\n
+    \   group_id => \"${GROUP_ID}\"\r\n    auto_offset_reset => \"${AUTO_OFFSET_RESET}\"\r\n
+    \   reconnect_backoff_ms => \"${RECONNECT_BACKOFF_MS}\"\r\n    retry_backoff_ms
+    => \"${RETRY_BACKOFF_MS}\"\r\n    session_timeout_ms => \"${SESSION_TIMEOUT_MS}\"\r\n
+    \   heartbeat_interval_ms => \"${HEARTBEAT_INTERVAL_MS}\"\r\n  }\r\n}\r\n\r\nfilter
+    {\r\n  json {\r\n    source => \"message\"\r\n  }\r\n}\r\n\r\noutput {\r\n  elasticsearch
+    {\r\n    hosts =>    [\"${ELASTICSEARCH_SERVER}:${ELASTICSEARCH_PORT}\"]\r\n    index
+    =>    \"${ELASTICSEARCH_INDEX}\"\r\n    user =>     \"${ELASTICSEARCH_USERNAME}\"\r\n
+    \   password => \"${ELASTICSEARCH_PASSWORD}\"\r\n  }\r\n}"
+kind: ConfigMap
+metadata:
+  name: config-file-logstash
